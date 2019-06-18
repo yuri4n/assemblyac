@@ -8,19 +8,10 @@
       <v-spacer></v-spacer>
       <v-btn
         flat
-        href="#"
+        href="https://github.com/JulianGarzon22/AssemblyVuejs"
         target="_blank"
       >
-        <v-icon left>group_add</v-icon>
-        <span class="mr-2">SING UP</span>
-      </v-btn>
-      <v-btn
-        flat
-        href="#"
-        target="_blank"
-      >
-        <v-icon>persona</v-icon>
-        <span class="mr-2">LOGIN</span>
+        <span class="mr-2">GITHUB</span>
       </v-btn>
     </v-toolbar>
 

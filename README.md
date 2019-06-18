@@ -1,9 +1,14 @@
-# assemblyac
+# Usage instructions for Assemblyac
+1. Copy the next rows in the template: section, label, mnemo and operands
+2. Click on "Compile"
 
 ## Project setup
+First, clone the repository
+Run:
 ```
 npm install
 ```
+Important code is in src\components\Conversor.vue
 
 ### Compiles and hot-reloads for development
 ```
@@ -15,15 +20,5 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Demo
+Go to [Assemblyac](https://assemblyac.000webhostapp.com/).
