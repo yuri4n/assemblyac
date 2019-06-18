@@ -3,6 +3,7 @@
     <v-layout row wrap>
       <v-flex md6>
         <v-textarea solo name="input-7-4" label="Copia y pega de tu tabla" v-model="table"></v-textarea>
+        <v-alert v-model="erroralert" type="error">Tienes un error en las instrucciones, revisa y vuelve a intentarlo</v-alert>
         <v-btn color="info" target="_blank" @click.prevent="compile()">
           <span class="mr-2">COMPILAR</span>
         </v-btn>
@@ -53,11 +54,13 @@ export default {
     vhdlcodes: [],
     rows: [],
     dataarray: [],
-    n: 18
+    n: 0,
+    erroralert: false
   }),
   methods: {
     compile: function() {
       this.cppcodes = [];
+      this.vhdlcodes = [];
       var splitlines = [];
       var cppisa = [];
       var cppoperand = [];
@@ -82,10 +85,14 @@ export default {
       }
 
       for (let i = 0; i < this.rows.length; i++) {
-        if (this.isa.indexOf(this.rows[i].mnemo) == -1) {
+        if (!this.rows[i].mnemo) {
           cppisa[i] = "0";
         } else {
-          cppisa[i] = this.isa.indexOf(this.rows[i].mnemo).toString(16);
+          if (this.isa.indexOf(this.rows[i].mnemo) == -1) {
+            this.erroralert = true;
+          } else {
+            cppisa[i] = this.isa.indexOf(this.rows[i].mnemo).toString(16);
+          }
         }
       }
 
@@ -113,9 +120,17 @@ export default {
             z => z.label == this.rows[i].operands
           );
           if (codeoperand && dataoperand) {
-            cppoperand[i] = "0" + dataoperand.hexindex;
+            if (dataoperand.hexindex.length == 1) {
+              cppoperand[i] = "0" + dataoperand.hexindex;
+            } else {
+              cppoperand[i] = dataoperand.hexindex;
+            }
           } else if (codeoperand && !dataoperand) {
-            cppoperand[i] = "0" + codeoperand.hexindex;
+            if (codeoperand.hexindex.length == 1) {
+              cppoperand[i] = "0" + codeoperand.hexindex;
+            } else {
+              cppoperand[i] = codeoperand.hexindex;
+            }
           } else {
             cppoperand[i] = "00";
           }
@@ -131,7 +146,11 @@ export default {
 
         if (this.rows[i].mnemo) {
           this.vhdlcodes.push(
-            'x"' + cppisa[i].toUpperCase() + cppoperand[i].toUpperCase()+ '"' + ","
+            'x"' +
+              cppisa[i].toUpperCase() +
+              cppoperand[i].toUpperCase() +
+              '"' +
+              ","
           );
         }
       }
